@@ -1,0 +1,12 @@
+# deps
+node_modules/
+
+# distribution folder
+dist/*
+!dist/index.html
+
+# OS generated stuff
+.DS_Store
+.DS_Store?
+
+npm-debug.log

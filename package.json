@@ -1,0 +1,24 @@
+{
+  "name": "meteo.app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t bubleify -d index.js > dist/bundle.js",
+    "watch": "watchify index.js -v -t bubleify -d -o dist/bundle.js",
+    "deploy": "surge -d https://meteo.surge.sh -p ./dist"
+  },
+  "author": "vladimyr",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^13.3.0",
+    "bubleify": "^0.7.0",
+    "cash-dom": "^1.3.5",
+    "watchify": "^3.8.0"
+  },
+  "dependencies": {
+    "qwest": "^4.4.5",
+    "url-join": "^1.1.0"
+  }
+}
