@@ -5,10 +5,10 @@ const r = require('qwest');
 const urlJoin = require('url-join');
 
 const proxy = 'https://cors-anywhere.herokuapp.com/';
-const baseUrl = 'http://prognoza.hr/tri/';
+const baseUrl = 'http://prognoza.hr/';
 
 function fetchReports(location) {
-    let reportUrl = urlJoin(proxy, baseUrl, `${ location }.xml`)
+    let reportUrl = urlJoin(proxy, baseUrl, `/tri/${ location }.xml`)
     return r.get(reportUrl, null, { responseType: 'xml' })
         .then((_, xml) => parseReports(xml));
 }
@@ -25,7 +25,7 @@ function parseReports(xmldoc) {
 }
 
 function symbol(name, suffix='.gif') {
-    return { name, url: `http://prognoza.hr/alasimboli/${ name }${ suffix }` };
+    return { name, url: `${ baseUrl }/alasimboli/${ name }${ suffix }` };
 }
 
 function parseForecast(data) {
