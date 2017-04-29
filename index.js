@@ -1,44 +1,37 @@
 'use strict';
 
-const $ = require('cash-dom');
-const r = require('qwest');
-const urlJoin = require('url-join');
+const { list, mount } = require('redom');
+const { fetchLocations, fetchReports } = require('./client.js');
+const Report = require('./components/report.js');
+const Cities = require('./components/cities.js');
 
-const baseUrl = 'http://prognoza.hr/';
+const storage = {
+  setItem(name, item) {
+    return window.localStorage.setItem(name, JSON.stringify(item));
+  },
+  getItem(name) {
+    let item = window.localStorage.getItem(name);
+    return item && JSON.parse(item);
+  }
+};
 
-function fetchReports(location) {
-  let reportUrl = urlJoin(baseUrl, `/tri/${ location }.xml`);
-  let url = `https://cors-proxy.now.sh/?url=${reportUrl}`;
-  return r.get(url, null, { responseType: 'xml' })
-    .then((_, xml) => parseReports(xml));
+const reports = list('.reports', Report);
+const cities = new Cities({
+  onSelected(data) {
+    storage.setItem('city', data);
+    displayCityReports(data.value);
+  }
+});
+
+mount(document.body, cities);
+mount(document.body, reports);
+
+fetchLocations().then(locations => {
+  cities.update(locations);
+  let data = storage.getItem('city') || locations[0];
+  cities.select(data);
+});
+
+function displayCityReports(city) {
+  fetchReports(city).then(data => reports.update(data));
 }
-
-function parseReports(xmldoc) {
-  let $root = $(xmldoc);
-  let data = $root.find('dan').map(day => {
-    let $day = $(day);
-    let date = $day.attr('datum');
-    let forecasts = $day.find('doba_dana').map(data => parseForecast(data));
-    return { date, forecasts };
-  });
-  return data;
-}
-
-function symbol(name, suffix='.gif') {
-  return { name, url: `${ baseUrl }/alasimboli/${ name }${ suffix }` };
-}
-
-function parseForecast(data) {
-  let $data = $(data);
-  return {
-    conditions: symbol($data.find('simbol').text(), 's.gif'),
-    wind: symbol($data.find('vjetar').text()),
-    temperature: {
-      max: parseInt($data.find('tmax').text(), 10),
-      min: parseInt($data.find('tmin').text(), 10)
-    }
-  };
-}
-
-fetchReports('Trogir')
-  .then(reports => console.log(JSON.stringify(reports, null, 2)));
