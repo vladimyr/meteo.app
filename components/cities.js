@@ -2,7 +2,7 @@
 
 import { el, list } from 'redom';
 const noop = Function.prototype;
-const map = (arr, cb=noop) => [].map.call(arr, cb);
+const map = (arr, cb = noop) => [].map.call(arr, cb);
 
 class City {
   constructor() {
@@ -15,7 +15,7 @@ class City {
 }
 
 export default class Cities {
-  constructor({ onSelected }={}) {
+  constructor({ onSelected } = {}) {
     this.el = el('.cities',
       el('label', { for: 'cities' }, 'City:'),
       this.picker = list('select', City));
