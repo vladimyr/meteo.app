@@ -1,16 +1,11 @@
 'use strict';
 
-const $ = require('cash-dom');
-const r = require('qwest');
-const urlJoin = require('url-join');
+import $ from 'cash-dom';
+import r from 'qwest';
+import urlJoin from 'url-join';
 
 const baseUrl = 'http://prognoza.hr/';
 const proxy = url => `https://cors-proxy.now.sh/?url=${url}`;
-
-module.exports = {
-  fetchLocations,
-  fetchReports
-};
 
 function getLocation(el) {
   let [ value ] = el.getAttribute('href').split('.');
@@ -18,7 +13,7 @@ function getLocation(el) {
   return { value, name };
 }
 
-function fetchLocations() {
+export function fetchLocations() {
   let url = urlJoin(baseUrl, `/tri/`);
   return r.get(proxy(url), null, { responseType: 'html' })
     .then((_, html) => parseLocations(html));
@@ -32,7 +27,7 @@ function parseLocations(html) {
   return locations;
 }
 
-function fetchReports(location) {
+export function fetchReports(location) {
   let url = urlJoin(baseUrl, `/tri/${ location }.xml`);
   return r.get(proxy(url), null, { responseType: 'xml' })
     .then((_, xml) => parseReports(xml));

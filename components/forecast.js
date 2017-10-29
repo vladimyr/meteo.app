@@ -1,8 +1,8 @@
 'use strict';
 
-const { el } = require('redom');
+import { el } from 'redom';
 
-class Forecast {
+export default class Forecast {
   constructor() {
     this.el = el('li.forecast',
       el('.conditions',
@@ -22,5 +22,3 @@ class Forecast {
     this.tempLow.textContent = `/${temperature.min}°`;
   }
 }
-
-module.exports = Forecast;

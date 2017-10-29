@@ -3,7 +3,7 @@ node_modules/
 
 # distribution folder
 dist/*
-!dist/index.html
+!dist/.gitkeep
 
 # OS generated stuff
 .DS_Store

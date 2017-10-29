@@ -1,9 +1,9 @@
 'use strict';
 
-const { list, mount } = require('redom');
-const { fetchLocations, fetchReports } = require('./client.js');
-const Report = require('./components/report.js');
-const Cities = require('./components/cities.js');
+import { list, mount } from 'redom';
+import { fetchLocations, fetchReports } from './client';
+import Report from './components/report';
+import Cities from './components/cities';
 
 const storage = {
   setItem(name, item) {

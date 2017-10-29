@@ -1,6 +1,6 @@
 'use strict';
 
-const { el, list } = require('redom');
+import { el, list } from 'redom';
 const noop = Function.prototype;
 const map = (arr, cb=noop) => [].map.call(arr, cb);
 
@@ -14,7 +14,7 @@ class City {
   }
 }
 
-class Cities {
+export default class Cities {
   constructor({ onSelected }={}) {
     this.el = el('.cities',
       el('label', { for: 'cities' }, 'City:'),
@@ -37,5 +37,3 @@ class Cities {
     this.onSelected(data);
   }
 }
-
-module.exports = Cities;

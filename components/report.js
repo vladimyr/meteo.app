@@ -1,9 +1,9 @@
 'use strict';
 
-const { el, list } = require('redom');
-const Forecast = require('./forecast.js');
+import { el, list } from 'redom';
+import Forecast from './forecast';
 
-class Report {
+export default class Report {
   constructor() {
     this.el = el('.report',
       this.date = el('span.date'),
@@ -14,5 +14,3 @@ class Report {
     this.forecasts.update(forecasts);
   }
 }
-
-module.exports = Report;
